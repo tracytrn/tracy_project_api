@@ -3,14 +3,13 @@ module Api
     module Users
       class DeleteUserCommand
         prepend SimpleCommand
-        attr_reader :user_id
 
-        def initialize(user_id)
-          @user_id = user_id
+        def initialize(params)
+          @params = params
         end
         
         def call
-          user = User.find_by(id: user_id)
+          user = User.find(@params[:id])
           if user
             user.destroy
             'Account deleted successfully.'

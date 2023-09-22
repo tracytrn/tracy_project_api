@@ -9,7 +9,7 @@ class Api::V1::UsersController < ApplicationController
   end
   
   def show
-    user = Api::V1::Users::ShowUserCommand.call(params[:id])
+    user = Api::V1::Users::ShowUserCommand.call(params)
     if user.success?
       render json: user.result
     else
@@ -33,7 +33,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update
-    user = Api::V1::Users::UpdateUserCommand.call(params[:id], user_params)
+    user = Api::V1::Users::UpdateUserCommand.call(params)
     if user.success?
       render json: user.result
     else
@@ -42,7 +42,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def destroy
-    user = Api::V1::Users::DeleteUserCommand.call(params[:id])
+    user = Api::V1::Users::DeleteUserCommand.call(params)
     if user.success?
       render json: user.result
     else
