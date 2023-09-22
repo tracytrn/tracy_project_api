@@ -1,24 +1,24 @@
 module Api
   module V1
     module Users
-      class ShowUserCommand
+      class CreateCommand
         prepend SimpleCommand
         
-
         def initialize(params)
           @params = params
         end
         
         def call
-          user = User.find(@params[:id])
-          if user 
+          user = User.new(@params)
+
+          if user.save
             user
           else
-            errors.add(:base, 'The user with this ID could not be found.')
+            errors.add_mutiple_errors(user.errors.full_messages)
             nil
           end
         end
-      end
+      end  
     end
   end
 end

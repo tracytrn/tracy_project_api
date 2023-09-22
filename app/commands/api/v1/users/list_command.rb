@@ -1,24 +1,23 @@
 module Api
   module V1
     module Users
-      class CreateUserCommand
+      class ListCommand
         prepend SimpleCommand
-        
+
         def initialize(params)
           @params = params
         end
         
         def call
-          user = User.new(@params)
-
-          if user.save
-            user
+          users = User.filter_user_by(@params)
+          if users
+            users
           else
             errors.add_mutiple_errors(user.errors.full_messages)
             nil
           end
         end
-      end  
+      end
     end
   end
 end

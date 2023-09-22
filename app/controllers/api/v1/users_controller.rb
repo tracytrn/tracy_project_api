@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
   def index
-    users = Api::V1::Users::GetListUsersCommand.call(params)
+    users = Api::V1::Users::ListCommand.call(params)
     if users.success?
       render json: users.result
     else
@@ -9,7 +9,7 @@ class Api::V1::UsersController < ApplicationController
   end
   
   def show
-    user = Api::V1::Users::ShowUserCommand.call(params)
+    user = Api::V1::Users::ShowCommand.call(params[:id])
     if user.success?
       render json: user.result
     else
@@ -24,7 +24,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def create
-    user = Api::V1::User::CreateUserCommand.call(user_params)
+    user = Api::V1::Users::CreateCommand.call(user_params)
     if user.success?
       render json: user.result
     else
@@ -33,7 +33,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update
-    user = Api::V1::Users::UpdateUserCommand.call(params)
+    user = Api::V1::Users::UpdateCommand.call(params[:id], user_params)
     if user.success?
       render json: user.result
     else
@@ -42,7 +42,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def destroy
-    user = Api::V1::Users::DeleteUserCommand.call(params)
+    user = Api::V1::Users::DeleteCommand.call(params[:id])
     if user.success?
       render json: user.result
     else
@@ -52,6 +52,6 @@ class Api::V1::UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:email, :password, :first_name, :last_name, :role, :search_key)
+    params.require(:user).permit(:email, :password, :first_name, :last_name, :role)
   end
 end
