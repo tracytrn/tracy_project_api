@@ -1,4 +1,6 @@
 class Api::V1::UsersController < ApplicationController
+  before_action :authenticate_user, only: [:show, :update, :destroy]
+
   def index
     users = Api::V1::Users::ListCommand.call(params)
     if users.success?

@@ -3,7 +3,7 @@ module Api
     module Users
       class UpdateCommand
         prepend SimpleCommand
-        attr_reader: user_id
+        attr_reader :user_id
 
         def initialize(user_id, params)
           @user_id = user_id

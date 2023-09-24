@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include JwtTokenable
   has_secure_password
 
   has_many :products, dependent: :destroy
