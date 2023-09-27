@@ -1,23 +1,25 @@
 module Api
   module V1
-    module Users
-      class ListCommand
+    module Admins
+      class Create
         prepend SimpleCommand
-
+        attr_reader :params
+        
         def initialize(params)
           @params = params
         end
         
         def call
-          users = User.filter_user_by(@params)
-          if users
-            users
+          user = User.new(params.merge(role: 'admin'))
+
+          if user.save
+            user
           else
             errors.add_mutiple_errors(user.errors.full_messages)
             nil
           end
         end
-      end
+      end  
     end
   end
 end

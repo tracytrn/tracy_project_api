@@ -1,16 +1,16 @@
 module Api
   module V1
-    module Users
-      class ShowCommand
+    module Customers
+      class Show
         prepend SimpleCommand
-        attr_reader :user_id
+        attr_reader :params
 
-        def initialize(user_id)
-          @user_id = user_id
+        def initialize(params)
+          @params = params
         end
         
         def call
-          user = User.find_by(id: user_id)
+          user = User.find(params[:id])
           if user 
             user
           else

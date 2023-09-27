@@ -18,6 +18,7 @@ gem "bcrypt"
 
 gem "jwt"
 gem "dotenv-rails"
+gem "kaminari"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
@@ -54,5 +55,5 @@ group :development do
   gem "annotate"
 end
 
-
+gem "pry"
 

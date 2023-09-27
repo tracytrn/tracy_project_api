@@ -1,25 +1,25 @@
 module Api
   module V1
-    module Users
-      class UpdateCommand
+    module Customers
+      class Create
         prepend SimpleCommand
-        attr_reader :user_id
-
-        def initialize(user_id, params)
-          @user_id = user_id
+        attr_reader :params
+        
+        def initialize(params)
           @params = params
         end
         
         def call
-          user = User.find_by(id: user_id)
-          if user.update(@params)
+          user = User.new(params.merge(:role 'customer'))
+
+          if user.save
             user
           else
             errors.add_mutiple_errors(user.errors.full_messages)
             nil
           end
         end
-      end
+      end  
     end
   end
 end
