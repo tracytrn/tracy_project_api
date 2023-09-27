@@ -11,7 +11,12 @@ module Api
         
         def call
           users = (User.customer.filter_users(params))
-          { success: true, result: users }
+          formatted_users = users.map do |user|
+            user_decorator = user.decorator
+            user_decorator.json_response
+          end
+
+          { success: true, result: formatted_users }
         rescue StandardError => e
           { success: false, errors: e.message }
         end

@@ -12,7 +12,8 @@ module Api
         def call
           user = User.find(params[:id])
           if user 
-            user
+            user_decorator = user.decorator
+            user_decorator.json_response
           else
             errors.add(:base, 'The user with this ID could not be found.')
             nil

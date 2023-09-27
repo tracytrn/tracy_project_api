@@ -19,4 +19,12 @@ class User < ApplicationRecord
     users = users.sorted_by_first_name
     users
   end
+
+  def json_response
+    decorator.json_response
+  end
+  
+  def decorator
+    @decorator ||= UserDecorator.new(self)
+  end
 end
