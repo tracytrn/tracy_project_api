@@ -24,7 +24,7 @@ class ApplicationController < ActionController::API
   end
 
   def render_invalid_token_error
-    render json: { error: 'Invalid Token' }, status: :unauthorized
+    render json: { error: 'The token is invalid or expired.'}, status: :unauthorized
   end
 
   def token

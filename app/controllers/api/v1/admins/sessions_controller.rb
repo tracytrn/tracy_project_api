@@ -1,6 +1,6 @@
-class Api::V1::SessionsController < ApplicationController
+class Api::V1::Admins::SessionsController < ApplicationController
   def create
-    command = Api::V1::Authenticate.call(params[:email], params[:password])
+    command = Api::V1::Admins::Authenticate.call(params[:email], params[:password])
     
     if command.success?
       render json: command.result
