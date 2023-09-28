@@ -11,12 +11,12 @@ module Api
         
         def call
           users = User.admin.filter_users(params)
-          formatted_users = users.map do |user|
-            user_decorator = user.decorator
-            user_decorator.json_response
-          end
-
-          { success: true, result: formatted_users }
+          users = users.page(page).per(per_page)
+          { 
+            success: true, 
+            records: users.map { |user| UserPresenter.new(user).json_response },
+            pagy: pagination(users)
+          }
         rescue StandardError => e
           { success: false, errors: e.message }
         end

@@ -12,7 +12,7 @@ class ApplicationController < ActionController::API
       return
     end
 
-    set_current_user(result)
+    current_user(result)
   end
 
   def token_missing?
@@ -31,12 +31,14 @@ class ApplicationController < ActionController::API
     @token ||= request.headers['Authorization']
   end
 
-  def set_current_user(result)
-    @current_user = result
+  def current_user(result)
+    user_id = result["user_id"]
+    @current_user ||= User.find_by(id: user_id)
   end
 
-  def authenticate_admin
-    render_invalid_token_error unless current_user&.admin?
-  end  
+  def authenticate_admin!
+    render_invalid_token_error unless @current_user&.admin?
+  end
 end
+
 

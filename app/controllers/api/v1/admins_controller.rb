@@ -1,7 +1,9 @@
 class Api::V1::AdminsController < ApplicationController
-  before_action :authenticate_user, only: [:update, :destroy] 
+  before_action :authenticate_user
+  before_action :authenticate_admin!
   def index
     command = Api::V1::Admins::List.call(admin_params)
+
     if command.success?
       render json: command.result
     else
@@ -11,13 +13,12 @@ class Api::V1::AdminsController < ApplicationController
   
   def show
     command = Api::V1::Admins::Show.call(params)
+
     if command.success?
       render json:command.result, status: :ok
     else
       render json: { errors:command.errors }, status: :unprocessable_entity
     end
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: 'User not found' }, status: :internal_server_error
   end
 
   def new
@@ -28,6 +29,7 @@ class Api::V1::AdminsController < ApplicationController
 
   def create
    command = Api::V1::Admins::Create.call(user_params)
+
     if command.success?
       render json:command.result
     else
@@ -43,8 +45,6 @@ class Api::V1::AdminsController < ApplicationController
     else
       render json: { errors:command.errors }, status: :unprocessable_entity
     end
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: 'User not found' }, status: :internal_server_error
   end
 
   def destroy
@@ -55,16 +55,14 @@ class Api::V1::AdminsController < ApplicationController
     else
       render json: { errors:command.errors }, status: :unprocessable_entity
     end
-  rescue ActiveRecord::RecordNotFound
-      render json: { error: 'User not found' }, status: :internal_server_error
   end
 
   private
   def user_params
-    params.require(:user).permit(:email, :password, :first_name, :last_name, :role)
+    params.permit(:email, :password, :first_name, :last_name, :role)
   end
 
   def admin_params
-    params.permit(:search_key, :page, :per_page)
+    params.permit(:keyword, :page, :per_page)
   end
 end

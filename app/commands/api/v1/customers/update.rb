@@ -12,19 +12,17 @@ module Api
         def call
           user = User.find(params[:id])
           if user.update(user_params.merge(role: 'customer'))
-            user
+            UserPresenter.new(user).json_response
           else
-            errors.add_multiple_errors(user.errors.full_messages)
+            errors.add(:base, 'The user with this ID could not be found.')
             nil
           end
-        rescue ActiveRecord::RecordNotFound
-          raise ActiveRecord::RecordNotFound, 'User not found'
         end
       
         private
       
         def user_params
-          params.require(:user).permit(:email, :password, :first_name, :last_name, :role)
+          params.permit(:email, :password, :first_name, :last_name, :role)
         end
       end
     end

@@ -13,7 +13,7 @@ module Api
           user = User.new(params.merge(role: 'admin'))
 
           if user.save
-            user
+            UserPresenter.new(user).json_response
           else
             errors.add_mutiple_errors(user.errors.full_messages)
             nil

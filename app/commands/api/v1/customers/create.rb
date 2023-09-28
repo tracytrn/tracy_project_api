@@ -10,12 +10,12 @@ module Api
         end
         
         def call
-          user = User.new(params.merge(:role 'customer'))
+          user = User.new(params.merge(role: 'customer'))
 
           if user.save
-            user
+            UserPresenter.new(user).json_response
           else
-            errors.add_mutiple_errors(user.errors.full_messages)
+            errors.add(:base, user.errors.full_messages)
             nil
           end
         end

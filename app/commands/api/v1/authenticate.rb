@@ -20,7 +20,7 @@ module Api
         payload = { user_id: user.id }
         token = JwtTokenable.generate_jwt_token(payload)
 
-        return { user: user, auth_token: token }
+        return { user: UserPresenter.new(user).json_response, auth_token: token }
       end
     end
   end
