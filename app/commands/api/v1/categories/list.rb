@@ -1,6 +1,6 @@
 module Api
   module V1
-    module Customers
+    module Categories
       class List
         prepend SimpleCommand
         attr_reader :params
@@ -10,12 +10,12 @@ module Api
         end
         
         def call
-          users = (User.customer.filter_users(params))
-          users = users.page(page).per(per_page)
+          categories = Category.filter_categories(params)
+          categories = categories.page(page).per(per_page)
           { 
             success: true, 
-            records: users.map { |user| UserPresenter.new(user).json_response },
-            pagination: pagination(users)
+            records: categories.map { |category| CategoryPresenter.new(category).json_response },
+            pagination: pagination(categories)
           }
         rescue StandardError => e
           { success: false, errors: e.message }

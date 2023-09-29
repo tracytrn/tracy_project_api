@@ -15,7 +15,7 @@ module Api
           { 
             success: true, 
             records: users.map { |user| UserPresenter.new(user).json_response },
-            pagy: pagination(users)
+            pagination: pagination(users)
           }
         rescue StandardError => e
           { success: false, errors: e.message }
