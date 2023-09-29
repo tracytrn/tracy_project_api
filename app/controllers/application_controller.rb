@@ -1,5 +1,9 @@
 class ApplicationController < ActionController::API
+  before_action :authenticate_user
+  attr_reader :current_user
+
   private
+
   def authenticate_user
     if token_missing?
       render_missing_token_error
@@ -12,7 +16,7 @@ class ApplicationController < ActionController::API
       return
     end
 
-    current_user(result)
+    set_current_user(result)
   end
 
   def token_missing?
@@ -24,14 +28,14 @@ class ApplicationController < ActionController::API
   end
 
   def render_invalid_token_error
-    render json: { error: 'The token is invalid or expired.'}, status: :unauthorized
+    render json: { error: 'The token is invalid or expired.' }, status: :unauthorized
   end
 
   def token
     @token ||= request.headers['Authorization']
   end
 
-  def current_user(result)
+  def set_current_user(result)
     user_id = result["user_id"]
     @current_user ||= User.find_by(id: user_id)
   end
@@ -40,5 +44,4 @@ class ApplicationController < ActionController::API
     render_invalid_token_error unless @current_user&.admin?
   end
 end
-
 

@@ -1,5 +1,6 @@
 class Api::V1::CustomersController < ApplicationController
   before_action :authenticate_user
+  before_action :authenticate_admin!, only: [:index]
   def index
     command = Api::V1::Customers::List.call(customer_params)
 
@@ -37,7 +38,7 @@ class Api::V1::CustomersController < ApplicationController
   end
 
   def update
-   command = Api::V1::Customers::Update.call(params)
+   command = Api::V1::Customers::Update.call(params, current_user)
     
     if command.success?
       render json:command.result, status: :ok
@@ -47,7 +48,7 @@ class Api::V1::CustomersController < ApplicationController
   end
 
   def destroy
-   command = Api::V1::Customers::Delete.call(params)
+   command = Api::V1::Customers::Delete.call(params, current_user)
    
     if command.success?
       render json:command.result, status: :ok
