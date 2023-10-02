@@ -1,8 +1,9 @@
-class Api::V1::AdminsController < ApplicationController
+class Api::V1::Admins::CategoriesController < ApplicationController
   before_action :authenticate_user
-  before_action :authenticate_admin!
+  before_action :authenticate_admin!, only: [:create, :update, :delete]
+
   def index
-    command = Api::V1::Admins::List.call(admin_params)
+    command = Api::V1::Categories::List.call(params)
 
     if command.success?
       render json: command.result
@@ -12,7 +13,7 @@ class Api::V1::AdminsController < ApplicationController
   end
   
   def show
-    command = Api::V1::Admins::Show.call(params)
+    command = Api::V1::Categories::Show.call(params)
 
     if command.success?
       render json:command.result, status: :ok
@@ -28,7 +29,7 @@ class Api::V1::AdminsController < ApplicationController
   end
 
   def create
-   command = Api::V1::Admins::Create.call(user_params)
+    command = Api::V1::Categories::Create.call(category_params, current_user)
 
     if command.success?
       render json:command.result
@@ -38,8 +39,8 @@ class Api::V1::AdminsController < ApplicationController
   end
 
   def update
-   command = Api::V1::Admins::Update.call(params, current_user)
-    
+   command = Api::V1::Categories::Update.call(category_params, current_user)
+  
     if command.success?
       render json:command.result, status: :ok
     else
@@ -48,7 +49,7 @@ class Api::V1::AdminsController < ApplicationController
   end
 
   def destroy
-   command = Api::V1::Admins::Delete.call(params, current_user)
+   command = Api::V1::Categories::Delete.call(params)
    
     if command.success?
       render json:command.result, status: :ok
@@ -58,11 +59,7 @@ class Api::V1::AdminsController < ApplicationController
   end
 
   private
-  def user_params
-    params.permit(:email, :password, :first_name, :last_name, :role)
-  end
-
-  def admin_params
-    params.permit(:keyword, :page, :per_page)
+  def category_params
+    params.require(:category).permit(:name, :description, :thumbnail)
   end
 end

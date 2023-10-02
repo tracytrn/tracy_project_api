@@ -15,7 +15,7 @@ module Api
           if user.save
             UserPresenter.new(user).json_response
           else
-            errors.add(:base, user.errors.full_messages)
+            errors.add_multiple_errors(user.errors.full_messages)
             nil
           end
         end

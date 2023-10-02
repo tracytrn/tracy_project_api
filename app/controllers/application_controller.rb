@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::API
-  before_action :authenticate_user
   attr_reader :current_user
 
   private
@@ -44,4 +43,3 @@ class ApplicationController < ActionController::API
     render_invalid_token_error unless @current_user&.admin?
   end
 end
-
