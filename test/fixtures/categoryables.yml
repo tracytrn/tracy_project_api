@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  categoryable_id: 1
+  categoryable_type: MyString
+
+two:
+  categoryable_id: 1
+  categoryable_type: MyString
