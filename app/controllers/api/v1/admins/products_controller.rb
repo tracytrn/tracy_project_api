@@ -1,9 +1,8 @@
-class Api::V1::Admins::CategoriesController < ApplicationController
+class Api::V1::Admins::ProductsController < ApplicationController
   before_action :authenticate_user
   before_action :authenticate_admin!
-
   def index
-    command = Api::V1::Categories::List.call(params)
+    command = Api::V1::Products::List.call(params)
 
     if command.success?
       render json: command.result
@@ -11,9 +10,9 @@ class Api::V1::Admins::CategoriesController < ApplicationController
       render json: { errors: command.errors}
     end
   end
-  
+
   def show
-    command = Api::V1::Categories::Show.call(params)
+    command = Api::V1::Products::Show.call(params)
 
     if command.success?
       render json:command.result, status: :ok
@@ -29,7 +28,7 @@ class Api::V1::Admins::CategoriesController < ApplicationController
   end
 
   def create
-    command = Api::V1::Categories::Create.call(category_params, current_user)
+    command = Api::V1::Products::Create.call(product_params, current_user)
 
     if command.success?
       render json:command.result
@@ -39,7 +38,7 @@ class Api::V1::Admins::CategoriesController < ApplicationController
   end
 
   def update
-    command = Api::V1::Categories::Update.call(category_params, current_user)
+    command = Api::V1::Products::Update.call(product_params, current_user)
   
     if command.success?
       render json:command.result, status: :ok
@@ -49,7 +48,7 @@ class Api::V1::Admins::CategoriesController < ApplicationController
   end
 
   def destroy
-    command = Api::V1::Categories::Delete.call(params)
+    command = Api::V1::Products::Delete.call(params)
    
     if command.success?
       render json:command.result, status: :ok
@@ -59,7 +58,7 @@ class Api::V1::Admins::CategoriesController < ApplicationController
   end
 
   private
-  def category_params
-    params.require(:category).permit(:name, :description, :thumbnail)
+  def product_params
+    params.require(:product).permit(:name, :price, :quantity, :description, :thumbnail)
   end
 end

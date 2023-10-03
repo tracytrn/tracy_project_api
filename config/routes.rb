@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       namespace :admins do
         post 'login', to: 'sessions#create'
         resources :categories
+        resources :products
       end
       
       resources :customers
@@ -12,6 +13,7 @@ Rails.application.routes.draw do
         post 'login', to: 'sessions#create'
       end
       resources :categories, only: [:index, :show]
+      resources :products, only: [:index, :show]
     end
   end
 end
