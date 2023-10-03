@@ -3,23 +3,19 @@ module Api
     module Categories
       class Delete
         prepend SimpleCommand
-        attr_reader :params, :current_user
+        attr_reader :params
 
-        def initialize(params, current_user)
+        def initialize(params)
           @params = params
-          @current_user = current_user
         end
 
         def call
-          if current_user.admin?
-            if category.destroy
-              'Category deleted successfully.'
-            else
-              errors.add_multiple_errors(category.errors.full_messages)
-              nil
-            end
+          category = Category.find_by(id: params[:id])
+
+          if category.destroy
+            'Category deleted successfully.'
           else
-            errors.add(:base, 'Unauthorized to delete this category.')
+            errors.add_multiple_errors(category.errors.full_messages)
             nil
           end
         end

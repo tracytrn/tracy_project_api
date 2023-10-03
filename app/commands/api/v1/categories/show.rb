@@ -10,7 +10,8 @@ module Api
         end
         
         def call
-          category = Category.find(params[:id])
+          category = Category.find_by(id: params[:id])
+          
           if category 
             CategoryPresenter.new(category).json_response
           else

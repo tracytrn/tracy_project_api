@@ -10,7 +10,7 @@ module Api
         end
         
         def call
-          products = Category.filter_products(params)
+          products = Product.filter_products(params)
           products = products.page(page).per(per_page)
           { 
             success: true, 

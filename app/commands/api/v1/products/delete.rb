@@ -3,23 +3,19 @@ module Api
     module Products
       class Delete
         prepend SimpleCommand
-        attr_reader :params, :current_user
+        attr_reader :params
 
-        def initialize(params, current_user)
+        def initialize(params)
           @params = params
-          @current_user = current_user
         end
 
         def call
-          if current_user.admin?
-            if product.destroy
-              'Product deleted successfully.'
-            else
-              errors.add_multiple_errors(product.errors.full_messages)
-              nil
-            end
+          product = Product.find_by(id: params[:id])
+          
+          if product.destroy
+            'Product deleted successfully.'
           else
-            errors.add(:base, 'Unauthorized to delete this product.')
+            errors.add_multiple_errors(product.errors.full_messages)
             nil
           end
         end

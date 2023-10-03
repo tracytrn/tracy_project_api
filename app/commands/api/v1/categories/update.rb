@@ -3,40 +3,21 @@ module Api
     module Categories
       class Update
         prepend SimpleCommand
-        attr_reader :params, :current_user
+        attr_reader :params
 
         def initialize(params)
           @params = params
-          @current_user = current_user
         end
       
         def call
-          category = Category.find(params[:id])
+          category = Category.find_by(id: params[:id])
 
-          if current_user.admin?
-            if category.update(category_params)
-              CategoryPresenter.new(category).json_response
-            else
-              errors.add(:base, 'Category\'s information update failed.')
-              nil
-            end
+          if category.update(category_params)
+            CategoryPresenter.new(category).json_response
           else
-            errors.add(:base, 'Unauthorized to update this category\'s information.')
+            errors.add(:base, 'Category\'s information update failed.')
             nil
           end
-        end
-      
-        private
-      
-        def category_params
-          permitted_params = params.permit(:name, :description, :thumbnail)
-          
-          # Check if the current user is an admin
-          if current_user&.admin?
-            permitted_params[:user_id] = current_user.id
-          end
-
-          permitted_params
         end
       end
     end

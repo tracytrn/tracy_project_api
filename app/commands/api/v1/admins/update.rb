@@ -3,25 +3,19 @@ module Api
     module Admins
       class Update
         prepend SimpleCommand
-        attr_reader :params, :current_user
+        attr_reader :params 
 
         def initialize(params)
           @params = params
-          @current_user = current_user
         end
       
         def call
-          user = User.find(params[:id])
+          user = User.find_by(id: params[:id])
 
-          if current_user.admin? || current_user.id == user.id
-            if user.update(user_params)
-              UserPresenter.new(user).json_response
-            else
-              errors.add(:base, 'User information update failed.')
-              nil
-            end
+          if user.update(user_params)
+            UserPresenter.new(user).json_response
           else
-            errors.add(:base, 'Unauthorized to update this user\'s information.')
+            errors.add(:base, 'The user with this ID could not be found.')
             nil
           end
         end

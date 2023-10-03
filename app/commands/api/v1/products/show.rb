@@ -10,7 +10,8 @@ module Api
         end
         
         def call
-          product = Product.find(params[:id])
+          product = Product.find_by(id: params[:id])
+          
           if product 
             ProductPresenter.new(product).json_response
           else

@@ -22,7 +22,7 @@
 #
 class Category < ApplicationRecord
   belongs_to :user
-  belongs_to :categorable, polymorphic: true
+  belongs_to :categorable, polymorphic: true, optional: true
   has_many :categories, as: :categorable
   has_many :products, through: :product_categories
 

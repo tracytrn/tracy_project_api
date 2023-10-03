@@ -11,7 +11,7 @@ module Api
         end
       
         def call
-          user = User.find(params[:id])
+          user = User.find_by(id: params[:id])
 
           if current_user.admin? || current_user.id == user.id
             if user.destroy

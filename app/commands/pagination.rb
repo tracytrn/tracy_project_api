@@ -13,6 +13,7 @@ module Pagination
       per_page: records.limit_value,
       next_page: records.next_page,
       total_page: records.total_pages
+      total_count: records.total_count
     }
   end
 end

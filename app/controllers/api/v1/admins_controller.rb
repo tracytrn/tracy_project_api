@@ -38,7 +38,7 @@ class Api::V1::AdminsController < ApplicationController
   end
 
   def update
-   command = Api::V1::Admins::Update.call(params, current_user)
+   command = Api::V1::Admins::Update.call(params)
     
     if command.success?
       render json:command.result, status: :ok
@@ -48,7 +48,7 @@ class Api::V1::AdminsController < ApplicationController
   end
 
   def destroy
-   command = Api::V1::Admins::Delete.call(params, current_user)
+   command = Api::V1::Admins::Delete.call(params)
    
     if command.success?
       render json:command.result, status: :ok

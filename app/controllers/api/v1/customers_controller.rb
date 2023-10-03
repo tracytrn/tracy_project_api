@@ -12,7 +12,7 @@ class Api::V1::CustomersController < ApplicationController
   end
   
   def show
-    command = Api::V1::Customers::Show.call(params)
+    command = Api::V1::Customers::Show.call(params, current_user)
 
     if command.success?
       render json:command.result, status: :ok

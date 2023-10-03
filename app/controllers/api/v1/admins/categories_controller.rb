@@ -29,7 +29,7 @@ class Api::V1::Admins::CategoriesController < ApplicationController
   end
 
   def create
-    command = Api::V1::Categories::Create.call(category_params, current_user)
+    command = Api::V1::Categories::Create.call(category_params)
 
     if command.success?
       render json:command.result
@@ -39,7 +39,7 @@ class Api::V1::Admins::CategoriesController < ApplicationController
   end
 
   def update
-    command = Api::V1::Categories::Update.call(category_params, current_user)
+    command = Api::V1::Categories::Update.call(category_params)
   
     if command.success?
       render json:command.result, status: :ok
