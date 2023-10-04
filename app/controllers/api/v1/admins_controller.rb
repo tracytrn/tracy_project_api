@@ -7,57 +7,56 @@ class Api::V1::AdminsController < ApplicationController
     if command.success?
       render json: command.result
     else
-      render json: { errors: command.errors}
+      render json: { errors: command.errors }
     end
   end
-  
+
   def show
     command = Api::V1::Admins::Show.call(params)
 
     if command.success?
-      render json:command.result, status: :ok
+      render json: command.result, status: :ok
     else
-      render json: { errors:command.errors }, status: :unprocessable_entity
+      render json: { errors: command.errors }, status: :unprocessable_entity
     end
   end
 
-  def new
-  end
+  def new; end
 
-  def edit
-  end
+  def edit; end
 
   def create
-   command = Api::V1::Admins::Create.call(user_params)
+    command = Api::V1::Admins::Create.call(user_params)
 
     if command.success?
-      render json:command.result
+      render json: command.result
     else
-      render json: { errors:command.errors }
+      render json: { errors: command.errors }
     end
   end
 
   def update
-   command = Api::V1::Admins::Update.call(params)
-    
+    command = Api::V1::Admins::Update.call(params)
+
     if command.success?
-      render json:command.result, status: :ok
+      render json: command.result, status: :ok
     else
-      render json: { errors:command.errors }, status: :unprocessable_entity
+      render json: { errors: command.errors }, status: :unprocessable_entity
     end
   end
 
   def destroy
-   command = Api::V1::Admins::Delete.call(params)
-   
+    command = Api::V1::Admins::Delete.call(params)
+
     if command.success?
-      render json:command.result, status: :ok
+      render json: command.result, status: :ok
     else
-      render json: { errors:command.errors }, status: :unprocessable_entity
+      render json: { errors: command.errors }, status: :unprocessable_entity
     end
   end
 
   private
+
   def user_params
     params.permit(:email, :password, :first_name, :last_name, :role)
   end

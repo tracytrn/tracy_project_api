@@ -32,10 +32,4 @@ class Category < ApplicationRecord
 
   scope :sorted_by_latest, -> { order(created_at: :DESC) }
 
-  def self.filter_categories(params)
-    categories = Category.all
-    categories = categories.search_by_name(params[:keyword]) if params[:keyword].present?
-    categories = categories.sorted_by_latest
-    categories
-  end
 end
