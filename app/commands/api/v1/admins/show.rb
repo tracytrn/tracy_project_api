@@ -11,10 +11,10 @@ module Api
         
         def call
           user = User.find_by(id: params[:id])
-          if user 
+          if user&.admin?
             UserPresenter.new(user).json_response
           else
-            errors.add(:base, 'The user with this ID could not be found.')
+            errors.add(:base, 'The admin with this ID could not be found.')
             nil
           end
         end

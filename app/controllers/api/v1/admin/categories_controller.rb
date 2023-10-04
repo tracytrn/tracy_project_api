@@ -1,9 +1,8 @@
-class Api::V1::Admins::CategoriesController < ApplicationController
-  before_action :authenticate_user
-  before_action :authenticate_admin!
+class Api::V1::Admin::CategoriesController < ApplicationController
+  before_action :authenticate_admin?
 
   def index
-    command = Api::V1::Categories::List.call(params)
+    command = Api::V1::Categories::List.call(params, current_user)
 
     if command.success?
       render json: command.result
@@ -29,12 +28,12 @@ class Api::V1::Admins::CategoriesController < ApplicationController
   end
 
   def create
-    command = Api::V1::Categories::Create.call(category_params)
+    command = Api::V1::Categories::Create.call(category_params, current_user)
 
     if command.success?
-      render json:command.result
+      render json:command.result, status: :created
     else
-      render json: { errors:command.errors }
+      render json: { errors:command.errors }, status: :unprocessable_entity
     end
   end
 
@@ -60,6 +59,6 @@ class Api::V1::Admins::CategoriesController < ApplicationController
 
   private
   def category_params
-    params.permit(:name, :description, :thumbnail)
+    params.permit(:name, :description, sub_categories_attributes: [:name, :description])
   end
 end

@@ -19,6 +19,17 @@ module Api
             nil
           end
         end
+
+        private
+        def category_params
+          # Permit both category and sub_categories attributes
+          params.require(:category).permit(
+            :name,
+            :description,
+            :user_id,
+            sub_categories_attributes: [:name, :description]
+          )
+        end
       end
     end
   end

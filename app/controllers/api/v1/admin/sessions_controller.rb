@@ -1,4 +1,4 @@
-class Api::V1::Admins::SessionsController < ApplicationController
+class Api::V1::Admin::SessionsController < ApplicationController
   def create
     command = Api::V1::Admins::Authenticate.call(params[:email], params[:password])
     if command.success?

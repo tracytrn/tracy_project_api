@@ -14,15 +14,15 @@ module Api
           user = User.find_by(id: params[:id])
           
           if user
-            if current_user.admin? || current_user.id == user.id
+            if current_user.admin? && current_user.id == user.id
               user.destroy
               { message: 'Account deleted successfully' }
             else
-              errors.add(:base, 'Unauthorized to delete this user account.')
+              errors.add(:base, 'Unauthorized to delete this admin account.')
               nil
             end
           else
-            errors.add(:base, 'No user found with this ID.')
+            errors.add(:base, 'No admin found with this ID.')
             nil
           end
         end

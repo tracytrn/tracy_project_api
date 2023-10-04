@@ -1,4 +1,4 @@
-class Api::V1::Customers::SessionsController < ApplicationController
+class Api::V1::Customer::SessionsController < ApplicationController
   def create
     command = Api::V1::Customers::Authenticate.call(params[:email], params[:password])
     

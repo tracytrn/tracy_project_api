@@ -23,19 +23,10 @@
 class Category < ApplicationRecord
   belongs_to :user
   belongs_to :categorable, polymorphic: true, optional: true
-  has_many :categories, as: :categorable
+  has_many :sub_categories, as: :categorable, class_name: 'Category', dependent: :destroy
+  accepts_nested_attributes_for :sub_categories
   has_many :products, through: :product_categories
 
-  scope :search_by_name, ->(keyword) do
-    where('name ILIKE ?', "%#{keyword}%")
-  end
-
-  scope :sorted_by_latest, -> { order(created_at: :DESC) }
-
-  def self.filter_categories(params)
-    categories = Category.all
-    categories = categories.search_by_name(params[:keyword]) if params[:keyword].present?
-    categories = categories.sorted_by_latest
-    categories
-  end
+  scope :search_by_name, ->(keyword) { where('name ILIKE ?', "%#{keyword}%") }
+  scope :sorted_by_latest, -> { order(created_at: :desc) }
 end

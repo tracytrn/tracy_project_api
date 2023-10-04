@@ -14,19 +14,19 @@ module Api
           user = User.find_by(id: params[:id])
           
           if user
-            if current_user.admin? || current_user.id == user.id
+            if current_user.admin? && current_user.id == user.id
               if user.update(user_params)
-                { message: 'Account updated successfully' }
+                UserPresenter.new(user).json_response
               else
                 errors.add_multiple_errors(user.errors.full_messages)
                 nil
               end
             else
-              errors.add(:base, 'Unauthorized to update this user account.')
+              errors.add(:base, 'Unauthorized to update this admin account.')
               nil
             end
           else
-            errors.add(:base, 'No user found with this ID.')
+            errors.add(:base, 'No admin found with this ID.')
             nil
           end
         end

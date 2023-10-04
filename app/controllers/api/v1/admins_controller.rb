@@ -2,7 +2,7 @@ class Api::V1::AdminsController < ApplicationController
   before_action :authenticate_admin?
   
   def index
-    command = Api::V1::Admins::List.call(admin_params)
+    command = Api::V1::Admins::List.call(admin_params, current_user)
 
     if command.success?
       render json: command.result

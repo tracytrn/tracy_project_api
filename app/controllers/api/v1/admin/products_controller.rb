@@ -1,6 +1,5 @@
-class Api::V1::Admins::ProductsController < ApplicationController
-  before_action :authenticate_user
-  before_action :authenticate_admin!
+class Api::V1::Admin::ProductsController < ApplicationController
+  before_action :authenticate_admin?
   def index
     command = Api::V1::Products::List.call(params)
 

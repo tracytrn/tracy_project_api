@@ -28,14 +28,6 @@ class User < ApplicationRecord
 
   scope :sorted_by_newest, -> { order(created_at: :DESC) }
 
-  def self.filter_users(params)
-    users = User.all
-    users = users.where(role: params[:role]) if params[:role].present?
-    users = users.search_by_name(params[:keyword]) if params[:keyword].present?
-    users = users.sorted_by_newest
-    users
-  end
-
   def downcase_email
     self.email = email.downcase if email.present?
   end

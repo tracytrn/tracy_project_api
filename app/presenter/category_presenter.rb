@@ -6,7 +6,17 @@ class CategoryPresenter < SimpleDelegator
       name: name,
       description: description,
       thumbnail: thumbnail,
-      user_id: user_id
+      user_id: user_id,
+      sub_categories_detail: sub_categories_detail
     }
+  end
+
+  def sub_categories_detail
+    sub_categories.map do |sub_category|
+      {
+        id: sub_category.id,
+        name: sub_category.name
+      }
+    end
   end
 end
