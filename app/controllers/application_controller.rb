@@ -1,45 +1,32 @@
 class ApplicationController < ActionController::API
-  attr_reader :current_user
 
   private
-
-  def authenticate_user
-    if token_missing?
-      render_missing_token_error
-      return
-    end
-
-    result = JwtTokenable.decode_jwt_token(token)
-    if result.nil?
-      render_invalid_token_error
-      return
-    end
-
-    set_current_user(result)
-  end
-
-  def token_missing?
-    token.blank?
-  end
-
-  def render_missing_token_error
-    render json: { error: 'Token missing' }, status: :unauthorized
-  end
-
-  def render_invalid_token_error
-    render json: { error: 'The token is invalid or expired.' }, status: :unauthorized
+  def current_user
+    @current_user ||= User.find_by(id: token_payload&.dig(:id))
   end
 
   def token
     @token ||= request.headers['Authorization']
   end
 
-  def set_current_user(result)
-    user_id = result["user_id"]
-    @current_user ||= User.find_by(id: user_id)
+  def token_payload
+    JwtTokenable.decode_jwt_token(token)
   end
 
-  def authenticate_admin!
-    render_invalid_token_error unless @current_user&.admin?
+  def authenticate_user
+    unless current_user
+      render_unauthorized('Invalid Token')
+    end
   end
+
+  def authenticate_admin?
+    unless current_user&.admin?
+      render_unauthorized('Admin access required')
+    end
+  end
+
+  def render_unauthorized(message)
+    render json: { error: message }, status: :unauthorized
+  end
+
 end

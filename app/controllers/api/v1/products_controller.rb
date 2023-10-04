@@ -1,4 +1,5 @@
 class Api::V1::ProductsController < ApplicationController
+  
   def index
     command = Api::V1::Products::List.call(params)
 

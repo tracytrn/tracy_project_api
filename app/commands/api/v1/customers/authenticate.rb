@@ -18,8 +18,7 @@ module Api
             return nil
           end
 
-          exp = 1.minutes.from_now
-          payload = { user_id: user.id, exp: exp.to_i }
+          payload = { user_id: user.id }
           token = JwtTokenable.generate_jwt_token(payload)
 
           return { user: UserPresenter.new(user).json_response, auth_token: token }

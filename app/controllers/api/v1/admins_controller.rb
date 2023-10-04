@@ -1,6 +1,6 @@
 class Api::V1::AdminsController < ApplicationController
-  before_action :authenticate_user
-  before_action :authenticate_admin!
+  before_action :authenticate_admin?
+  
   def index
     command = Api::V1::Admins::List.call(admin_params)
 
@@ -48,8 +48,7 @@ class Api::V1::AdminsController < ApplicationController
   end
 
   def destroy
-   command = Api::V1::Admins::Delete.call(params)
-   
+    command = Api::V1::Admins::Delete.call(params, current_user)
     if command.success?
       render json:command.result, status: :ok
     else

@@ -22,7 +22,7 @@ class User < ApplicationRecord
   
   enum role: {customer: 0, admin: 1}
   
-  scope :search_by_name, ->(keyword) do
+  scope :search_by_name, ->(keyword) do 
     where('first_name ILIKE :key OR last_name ILIKE :key', key: "%#{keyword}%")
   end
 
