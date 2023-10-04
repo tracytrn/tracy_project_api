@@ -17,8 +17,8 @@ class User < ApplicationRecord
   before_validation :downcase_email
   validates :email, uniqueness: true
 
-  has_many :products, dependent: :destroy
-  has_many :categories, dependent: :destroy
+  has_many :products
+  has_many :categories
   
   enum role: {customer: 0, admin: 1}
   

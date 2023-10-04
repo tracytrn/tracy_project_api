@@ -38,7 +38,7 @@ class Api::V1::AdminsController < ApplicationController
   end
 
   def update
-   command = Api::V1::Admins::Update.call(params)
+   command = Api::V1::Admins::Update.call(params, current_user)
     
     if command.success?
       render json:command.result, status: :ok

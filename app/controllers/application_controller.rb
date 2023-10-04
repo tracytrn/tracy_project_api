@@ -2,7 +2,7 @@ class ApplicationController < ActionController::API
 
   private
   def current_user
-    @current_user ||= User.find_by(id: token_payload&.dig(:id))
+    @current_user ||= User.find_by(id: token_payload&.dig("user_id"))
   end
 
   def token
@@ -18,7 +18,6 @@ class ApplicationController < ActionController::API
       render_unauthorized('Invalid Token')
     end
   end
-
   def authenticate_admin?
     unless current_user&.admin?
       render_unauthorized('Admin access required')
