@@ -2,7 +2,7 @@ class Api::V1::Admin::CategoriesController < ApplicationController
   before_action :authenticate_admin?
 
   def index
-    command = Api::V1::Categories::List.call(params, current_user)
+    command = Api::V1::Categories::List.call(params)
 
     if command.success?
       render json: command.result
@@ -28,7 +28,7 @@ class Api::V1::Admin::CategoriesController < ApplicationController
   end
 
   def create
-    command = Api::V1::Categories::Create.call(category_params, current_user)
+    command = Api::V1::Categories::Create.call(params, current_user)
 
     if command.success?
       render json:command.result, status: :created
@@ -38,7 +38,7 @@ class Api::V1::Admin::CategoriesController < ApplicationController
   end
 
   def update
-    command = Api::V1::Categories::Update.call(category_params)
+    command = Api::V1::Categories::Update.call(params, current_user)
   
     if command.success?
       render json:command.result, status: :ok
@@ -59,6 +59,6 @@ class Api::V1::Admin::CategoriesController < ApplicationController
 
   private
   def category_params
-    params.permit(:name, :description, sub_categories_attributes: [:name, :description])
+    params.permit(:id, :name, :description, sub_categories_attributes: [:name, :description])
   end
 end

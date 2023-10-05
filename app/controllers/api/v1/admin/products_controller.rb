@@ -1,5 +1,6 @@
 class Api::V1::Admin::ProductsController < ApplicationController
   before_action :authenticate_admin?
+
   def index
     command = Api::V1::Products::List.call(params)
 
@@ -27,7 +28,7 @@ class Api::V1::Admin::ProductsController < ApplicationController
   end
 
   def create
-    command = Api::V1::Products::Create.call(product_params)
+    command = Api::V1::Products::Create.call(params)
 
     if command.success?
       render json:command.result
@@ -37,7 +38,7 @@ class Api::V1::Admin::ProductsController < ApplicationController
   end
 
   def update
-    command = Api::V1::Products::Update.call(product_params)
+    command = Api::V1::Products::Update.call(params)
   
     if command.success?
       render json:command.result, status: :ok
@@ -58,6 +59,6 @@ class Api::V1::Admin::ProductsController < ApplicationController
 
   private
   def product_params
-    params.permit(:name, :price, :quantity, :description, :thumbnail)
+    params.permit(:id, :name, :price, :quantity, :description, :thumbnail)
   end
 end
