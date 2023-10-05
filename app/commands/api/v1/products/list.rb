@@ -10,15 +10,19 @@ module Api
         end
         
         def call
-          products = Product.filter_products(params)
-          products = products.page(page).per(per_page)
+          records = load_products.page(page).per(per_page)
           { 
-            success: true, 
-            records: products.map { |product| ProductPresenter.new(product).json_response },
-            pagination: pagination(products)
+            success: true,
+            records: records.map { |product| ProductPresenter.new(product).json_response },
+            pagination: pagination(records)
           }
         rescue StandardError => e
           { success: false, errors: e.message }
+        end
+
+        private
+        def load_products
+          Product.includes(:categories).search_by_name(params[:keyword]).sorted_by_latest
         end
       end
     end

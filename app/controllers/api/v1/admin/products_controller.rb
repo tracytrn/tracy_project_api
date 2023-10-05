@@ -28,7 +28,7 @@ class Api::V1::Admin::ProductsController < ApplicationController
   end
 
   def create
-    command = Api::V1::Products::Create.call(params)
+    command = Api::V1::Products::Create.call(params, current_user)
 
     if command.success?
       render json:command.result
@@ -38,7 +38,7 @@ class Api::V1::Admin::ProductsController < ApplicationController
   end
 
   def update
-    command = Api::V1::Products::Update.call(params)
+    command = Api::V1::Products::Update.call(params, current_user)
   
     if command.success?
       render json:command.result, status: :ok
@@ -59,6 +59,6 @@ class Api::V1::Admin::ProductsController < ApplicationController
 
   private
   def product_params
-    params.permit(:id, :name, :price, :quantity, :description, :thumbnail)
+    params.permit(:id, :name, :price, :quantity, :description, :thumbnail, product_categories_attributes: [:category_id])
   end
 end

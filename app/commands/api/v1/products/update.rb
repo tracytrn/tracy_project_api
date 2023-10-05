@@ -5,20 +5,49 @@ module Api
         prepend SimpleCommand
         attr_reader :params, :current_user
 
-        def initialize(params)
+        def initialize(params, current_user)
           @params = params
           @current_user = current_user
         end
-      
+
         def call
+          return nil unless current_user.admin?
+
+          product = update_product
+          if product.errors.any?
+            errors.add_multiple_errors(product.errors.full_messages)
+            nil
+          else
+            ProductPresenter.new(product).json_response
+          end
+        end
+
+        private
+
+        def update_product
           product = Product.find_by(id: params[:id])
 
-          if product.update(product_params)
-            productPresenter.new(product).json_response
+          if product
+            product.update(product_params)
+            assign_categories_to_product(product)
           else
-            errors.add(:base, 'Product\'s information update failed.')
-            nil
+            errors.add(:base, 'No product found with this ID.')
           end
+
+          product
+        end
+
+        def assign_categories_to_product(product)
+          if params[:product_categories_attributes].present?
+            category_ids = params[:product_categories_attributes].map { |pc| pc[:category_id] }
+            product.category_ids = category_ids
+          else
+            product.category_ids = [] # Remove all categories if none are provided
+          end
+        end
+
+        def product_params
+          params.permit(:name, :price, :quantity, :description, :thumbnail)
         end
       end
     end

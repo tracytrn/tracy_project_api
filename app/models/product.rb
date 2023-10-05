@@ -22,18 +22,10 @@
 #
 class Product < ApplicationRecord
   belongs_to :user
+  has_many :product_categories, dependent: :destroy
   has_many :categories, through: :product_categories
+  accepts_nested_attributes_for :product_categories, allow_destroy: true
 
-  scope :search_by_name, ->(keyword) do
-    where('name ILIKE ?', "%#{keyword}%")
-  end
-
+  scope :search_by_name, ->(keyword) { where('name ILIKE ?', "%#{keyword}%") }
   scope :sorted_by_latest, -> { order(created_at: :DESC) }
-
-  def self.filter_products(params)
-    products = Products.all
-    products = products.search_by_name(params[:keyword]) if params[:keyword].present?
-    products = products.sorted_by_latest
-    products
-  end
 end
