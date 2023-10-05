@@ -10,6 +10,7 @@ module Api
         end
         
         def call
+          
           records = load_products.page(page).per(per_page)
           { 
             success: true,
@@ -21,6 +22,12 @@ module Api
         end
 
         private
+
+        #Kane: using single query, example below:
+        # def records
+        #   @records ||= Product.includes(:categories).search_by_name(params[:keyword]).sorted_by_latest.page(page).per(per_page)
+        # end
+
         def load_products
           Product.includes(:categories).search_by_name(params[:keyword]).sorted_by_latest
         end

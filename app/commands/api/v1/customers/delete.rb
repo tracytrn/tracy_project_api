@@ -13,6 +13,8 @@ module Api
         def call
           user = User.find_by(id: params[:id])
 
+          #Kane: Check exist + throw errors before destroy
+
           if current_user.admin? || current_user.id == user.id
             if user.destroy
               { success: true, message: 'User successfully deleted' }

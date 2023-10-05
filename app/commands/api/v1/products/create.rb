@@ -11,7 +11,7 @@ module Api
         end
 
         def call
-          return nil unless current_user.admin?
+          return nil unless current_user.admin? #Kane: Remove this
 
           product = create_product
           return ProductPresenter.new(product).json_response if product.persisted?

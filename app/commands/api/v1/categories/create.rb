@@ -11,7 +11,7 @@ module Api
         end
 
         def call
-          return nil unless current_user.admin?
+          return nil unless current_user.admin? #Kane: Remove
 
           category = create_category
           return CategoryPresenter.new(category).json_response if category.persisted?

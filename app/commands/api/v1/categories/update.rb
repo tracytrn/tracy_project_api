@@ -11,7 +11,7 @@ module Api
         end
 
         def call
-          return nil unless current_user.admin?
+          return nil unless current_user.admin? #Kane: Remove (Checked in controller)
 
           category = update_category
 
