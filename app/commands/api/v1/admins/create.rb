@@ -12,6 +12,8 @@ module Api
         def call
           user = User.new(params.merge(role: 'admin'))
 
+          #Kane: Check existed email in system before save. Email is unique! -> Hạn chế dùng validate của model
+
           if user.save
             UserPresenter.new(user).json_response
           else

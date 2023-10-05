@@ -11,6 +11,8 @@ module Api
 
         def call
           product = Product.find_by(id: params[:id])
+
+          #Kane: Check exist + throw errors before destroy
           
           if product.destroy
             'Product deleted successfully.'
