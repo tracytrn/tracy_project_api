@@ -3,16 +3,13 @@ module Api
     module Categories
       class Create
         prepend SimpleCommand
-        attr_reader :params, :current_user
+        attr_reader :params
 
-        def initialize(params, current_user)
+        def initialize(params)
           @params = params
-          @current_user = current_user
         end
 
         def call
-          return nil unless current_user.admin? #Kane: Remove
-
           category = create_category
           return CategoryPresenter.new(category).json_response if category.persisted?
 
@@ -24,16 +21,7 @@ module Api
 
         def create_category
           category = Category.new(category_params)
-          category.user_id = current_user.id
-          assign_user_id_to_sub_categories(category)
-          
           category if category.save
-        end
-
-        def assign_user_id_to_sub_categories(category)
-          category.sub_categories.each do |sub_category|
-            sub_category.user_id = current_user.id
-          end
         end
 
         def category_params

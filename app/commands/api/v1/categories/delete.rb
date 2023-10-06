@@ -11,8 +11,11 @@ module Api
 
         def call
           category = Category.find_by(id: params[:id])
-
-          # Kane: Check exist + throw errors before destroy
+          
+          unless category
+            errors.add(:base, 'Category not found.')
+            return nil
+          end
 
           if category.destroy
             'Category deleted successfully.'

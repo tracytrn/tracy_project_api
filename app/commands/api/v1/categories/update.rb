@@ -3,15 +3,13 @@ module Api
     module Categories
       class Update
         prepend SimpleCommand
-        attr_reader :params, :current_user
+        attr_reader :params
 
-        def initialize(params, current_user)
+        def initialize(params)
           @params = params
-          @current_user = current_user
         end
 
         def call
-          return nil unless current_user.admin? #Kane: Remove (Checked in controller)
 
           category = update_category
 
