@@ -10,6 +10,16 @@ class Api::V1::CategoriesController < ApplicationController
     end
   end
   
+  def products
+    command = Api::V1::Categories::ListProducts.call(params)
+
+    if command.success?
+      render json: command.result, status: :ok
+    else
+      render json: { errors: command.errors }, status: :unprocessable_entity
+    end
+  end
+  
   def show
     command = Api::V1::Categories::Show.call(params)
 

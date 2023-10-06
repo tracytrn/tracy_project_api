@@ -4,7 +4,11 @@ Rails.application.routes.draw do
       resources :admins
       namespace :admin do
         post 'login', to: 'sessions#create'
-        resources :categories
+        resources :categories do
+          member do
+            get 'products', to: 'categories#products'
+          end
+        end
         resources :products
       end
       
@@ -12,7 +16,11 @@ Rails.application.routes.draw do
       namespace :customer do
         post 'login', to: 'sessions#create'
       end
-      resources :categories, only: [:index, :show]
+      resources :categories, only: [:index, :show] do
+        member do
+          get 'products', to: 'categories#products'
+        end
+      end
       resources :products, only: [:index, :show] 
     end
   end

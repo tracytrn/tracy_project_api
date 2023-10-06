@@ -25,8 +25,8 @@ class Category < ApplicationRecord
   belongs_to :categorable, polymorphic: true, optional: true
   has_many :sub_categories, as: :categorable, class_name: 'Category', dependent: :destroy
   accepts_nested_attributes_for :sub_categories
-  has_many :products, through: :product_categories
   has_many :product_categories
+  has_many :products, through: :product_categories
 
   scope :search_by_name, ->(keyword) { where('name ILIKE ?', "%#{keyword}%") }
   scope :sorted_by_latest, -> { order(created_at: :desc) }
