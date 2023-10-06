@@ -3,16 +3,13 @@ module Api
     module Products
       class Create
         prepend SimpleCommand
-        attr_reader :params, :current_user
+        attr_reader :params
 
-        def initialize(params, current_user)
+        def initialize(params)
           @params = params
-          @current_user = current_user
         end
 
         def call
-          return nil unless current_user.admin? #Kane: Remove this
-
           product = create_product
           return ProductPresenter.new(product).json_response if product.persisted?
 
@@ -24,7 +21,6 @@ module Api
 
         def create_product
           product = Product.new(product_params)
-          product.user_id = current_user.id
 
           if product.save
             assign_categories_to_product(product)
@@ -42,7 +38,7 @@ module Api
         end
 
         def product_params
-          params.permit(:name, :price, :quantity, :description, :thumbnail)
+          params.permit(:name, :price, :quantity, :description, :thumbnail, product_categories_attributes: [:category_id])
         end
       end
     end

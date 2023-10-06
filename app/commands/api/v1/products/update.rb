@@ -3,15 +3,13 @@ module Api
     module Products
       class Update
         prepend SimpleCommand
-        attr_reader :params, :current_user
+        attr_reader :params
 
-        def initialize(params, current_user)
+        def initialize(params)
           @params = params
-          @current_user = current_user
         end
 
         def call
-          return nil unless current_user.admin?
 
           product = update_product
           if product.errors.any?
@@ -47,7 +45,7 @@ module Api
         end
 
         def product_params
-          params.permit(:name, :price, :quantity, :description, :thumbnail)
+          params.permit(:name, :price, :quantity, :description, :thumbnail, product_categories_attributes: [:category_id])
         end
       end
     end

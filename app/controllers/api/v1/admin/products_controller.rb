@@ -21,14 +21,8 @@ class Api::V1::Admin::ProductsController < ApplicationController
     end
   end
 
-  def new
-  end
-
-  def edit
-  end
-
   def create
-    command = Api::V1::Products::Create.call(params, current_user)
+    command = Api::V1::Products::Create.call(params)
 
     if command.success?
       render json:command.result
@@ -38,7 +32,7 @@ class Api::V1::Admin::ProductsController < ApplicationController
   end
 
   def update
-    command = Api::V1::Products::Update.call(params, current_user)
+    command = Api::V1::Products::Update.call(params)
   
     if command.success?
       render json:command.result, status: :ok
