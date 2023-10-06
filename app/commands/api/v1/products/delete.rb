@@ -12,12 +12,20 @@ module Api
         def call
           product = Product.find_by(id: params[:id])
 
-          #Kane: Check exist + throw errors before destroy
-          
-          if product.destroy
-            'Product deleted successfully.'
+          if product
+            if product.present?
+              if product.destroy
+                'Product deleted successfully.'
+              else
+                errors.add_multiple_errors(product.errors.full_messages)
+                nil
+              end
+            else
+              errors.add_multiple_errors(product.errors.full_messages)
+              nil
+            end
           else
-            errors.add_multiple_errors(product.errors.full_messages)
+            errors.add(:base, 'Product not found.')
             nil
           end
         end

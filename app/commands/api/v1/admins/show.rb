@@ -10,10 +10,8 @@ module Api
         end
         
         def call
-          user = User.find_by(id: params[:id])
-
-          #Kane: Check exist + throw errors. Use User.admin.find_by -> Check if user
-
+          user = User.admin.find_by(id: params[:id])
+          
           if user&.admin?
             UserPresenter.new(user).json_response
           else

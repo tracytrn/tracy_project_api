@@ -8,7 +8,6 @@ class ProductPresenter < SimpleDelegator
       quantity: quantity,
       description: description,
       thumbnail: thumbnail,
-      user_id: user_id,
       categories_detail: categories_detail
     }
   end

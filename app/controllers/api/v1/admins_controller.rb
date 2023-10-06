@@ -2,7 +2,7 @@ class Api::V1::AdminsController < ApplicationController
   before_action :authenticate_admin?
   
   def index
-    command = Api::V1::Admins::List.call(admin_params, current_user)
+    command = Api::V1::Admins::List.call(admin_params)
 
     if command.success?
       render json: command.result
@@ -19,12 +19,6 @@ class Api::V1::AdminsController < ApplicationController
     else
       render json: { errors:command.errors }, status: :unprocessable_entity
     end
-  end
-
-  def new
-  end
-
-  def edit
   end
 
   def create

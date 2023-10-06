@@ -11,19 +11,21 @@ module Api
         end
       
         def call
-          user = User.find_by(id: params[:id])
-
-          #Kane: Check exist + throw errors before destroy
-
-          if current_user.admin? || current_user.id == user.id
-            if user.destroy
-              { success: true, message: 'User successfully deleted' }
+          user = User.customer.find_by(id: params[:id])
+          if user
+            if current_user.admin? || current_user.id == user.id
+              if user.destroy
+                { success: true, message: 'User successfully deleted' }
+              else
+                errors.add(:base, 'User deletion failed.')
+                nil
+              end
             else
-              errors.add(:base, 'User deletion failed.')
+              errors.add(:base, 'Unauthorized to delete this user.')
               nil
             end
           else
-            errors.add(:base, 'Unauthorized to delete this user.')
+            errors.add(:base, 'User not found.')
             nil
           end
         end

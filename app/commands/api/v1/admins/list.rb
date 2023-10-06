@@ -3,15 +3,13 @@ module Api
     module Admins
       class List
         prepend SimpleCommand
-        attr_reader :params, :current_user
+        attr_reader :params
         include Pagination 
-        def initialize(params, current_user)
+        def initialize(params)
           @params = params
-          @current_user = current_user
         end
         
         def call
-          return nil unless current_user.admin?
           records = load_users.page(page).per(per_page)
           { 
             success: true, 

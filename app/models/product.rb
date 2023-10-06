@@ -10,7 +10,7 @@
 #  thumbnail   :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  user_id     :bigint           not null
+#  user_id     :bigint
 #
 # Indexes
 #
@@ -21,7 +21,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Product < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
   has_many :product_categories, dependent: :destroy
   has_many :categories, through: :product_categories
   accepts_nested_attributes_for :product_categories, allow_destroy: true

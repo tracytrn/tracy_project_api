@@ -10,7 +10,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  categorable_id   :integer
-#  user_id          :bigint           not null
+#  user_id          :bigint
 #
 # Indexes
 #
@@ -21,7 +21,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Category < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :categorable, polymorphic: true, optional: true
   has_many :sub_categories, as: :categorable, class_name: 'Category', dependent: :destroy
   accepts_nested_attributes_for :sub_categories

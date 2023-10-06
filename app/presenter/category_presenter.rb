@@ -6,7 +6,6 @@ class CategoryPresenter < SimpleDelegator
       name: name,
       description: description,
       thumbnail: thumbnail,
-      user_id: user_id,
       sub_categories_detail: sub_categories_detail
     }
   end
